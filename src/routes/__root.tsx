@@ -1,4 +1,5 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
+import type { QueryClient } from "@tanstack/react-query";
 import {
   HeadContent,
   Scripts,
@@ -6,8 +7,9 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
+import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/base/provider/theme-provider";
 
-import type { QueryClient } from "@tanstack/react-query";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
@@ -37,14 +39,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   }
 );
 
+const themeScript = `
+(function () {
+  try {
+    const theme = localStorage.getItem("vite-ui-theme");
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  } catch (_) {}
+})();
+`;
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
+
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
+
       <body>
-        {children}
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          {children}
+
+          <Toaster richColors position="top-right" />
+        </ThemeProvider>
         <TanStackDevtools
           config={{
             position: "bottom-right",
@@ -56,6 +76,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             },
           ]}
         />
+
         <Scripts />
       </body>
     </html>
