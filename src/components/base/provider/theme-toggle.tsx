@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { useTheme } from "./theme-provider";
+
 import {
   Tooltip,
   TooltipContent,
@@ -42,7 +43,7 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="pointer-events-none p-2 px-[10px] rounded-md"
+        className="pointer-events-none py-[6px] px-[12px] rounded-md"
         aria-hidden
       >
         <ThemeIcon />
@@ -57,7 +58,7 @@ export function ThemeToggle() {
           <button
             aria-label="Toggle theme"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="py-2 px-[10px] rounded-md transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:hover:text-white"
+            className="py-[6px] px-[12px] rounded-md transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 dark:hover:text-white"
           >
             <ThemeIcon />
             <span className="sr-only">Toggle theme</span>

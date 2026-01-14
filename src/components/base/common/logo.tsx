@@ -1,5 +1,7 @@
 import { useRef } from "react";
+
 import { Link } from "@tanstack/react-router";
+
 import { ZapHandle, ZapIcon } from "@/components/ui/icons/zap";
 
 export function Logo() {

@@ -1,1 +1,1 @@
-# Shop Start 
+# Shop Start — Build Multi-Tenant Stores Faster.

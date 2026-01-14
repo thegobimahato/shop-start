@@ -1,10 +1,18 @@
-import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
-import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
+
+import { Menu09Icon } from "hugeicons-react";
+import { ShoppingBag } from "lucide-react";
+
+import CartSheet from "@/components/containers/store/cart/cart-sheet";
+import { Button } from "@/components/ui/button";
+
+import { useCartStore } from "@/lib/store/cart-store";
+
 import { ThemeToggle } from "../provider/theme-toggle";
 import { Logo } from "./logo";
+import { MobileMenu } from "./mobile-menu";
 import Navbar from "./navbar";
+
 
 const navigationItems = [
   { label: "Home", to: "/" },
@@ -13,7 +21,7 @@ const navigationItems = [
 ];
 
 export default function Header() {
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { totalItems, setIsOpen } = useCartStore();
 
   return (
     <header className="@container sticky top-0 z-40 w-full border-b border-dashed bg-background backdrop-blur supports-backdrop-filter:bg-background/80 ">
@@ -25,32 +33,51 @@ export default function Header() {
         </div>
 
         <div className="flex items-center justify-end gap-2">
-          <ThemeToggle />
-
           <div className="@6xl:flex hidden justify-center gap-2">
+            <ThemeToggle />
+
             <Button
               variant={"outline"}
               size={"lg"}
               type="button"
               aria-label="Open Cart"
-              onClick={() => setIsCartOpen(true)}
+              onClick={() => setIsOpen(true)}
               className="relative"
             >
-              <ShoppingCart className="@7xl:size-6 size-5" />
+              <ShoppingBag className="@7xl:size-6 size-5" />
 
               {/* {totalItems} */}
-              <span className="-right-1 -top-1 absolute flex h-5 w-5 items-center justify-center rounded-full bg-primary font-medium text-[12px] text-primary-foreground">
-                {/* {totalItems} */}
-                10
-              </span>
+              {totalItems > 0 && (
+                <span className="-right-1 -top-1 absolute flex h-5 w-5 items-center justify-center rounded-full bg-primary font-medium text-[12px] text-primary-foreground">
+                  {totalItems}
+                </span>
+              )}
             </Button>
+
+            <CartSheet />
+
+            <Link to="/auth/sign-in">
+              <Button variant={"outline"} size={"lg"} type="button">
+                Sign In
+              </Button>
+            </Link>
           </div>
 
-          <Link to="/auth/sign-in">
-            <Button variant={"outline"} size={"lg"} type="button">
-              Sign In
-            </Button>
-          </Link>
+          <div className="flex @6xl:hidden">
+            <MobileMenu
+              navigationItems={navigationItems}
+              trigger={
+                <Button
+                  variant="secondary"
+                  size="icon-lg"
+                  aria-label="Open menu"
+                  className="rounded-xl"
+                >
+                  <Menu09Icon />
+                </Button>
+              }
+            />
+          </div>
         </div>
       </div>
     </header>
